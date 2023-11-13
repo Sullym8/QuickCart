@@ -48,14 +48,14 @@
                     app:iconifiedByDefault="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     app:queryHint="Search for items here!"
                     android:backgroundTint="@color/white"
                     android:textColorHint="#CCCCCC"
                     android:textColor="@color/white"
                     android:drawablePadding="4dp"
+                    android:fontFamily="@font/playfair_display"
                     android:hint="Search for any item!"
-                    android:textSize="20dp"
 
                     android:drawableStart="@drawable/search"
                     />
@@ -64,7 +64,7 @@
                     android:id="@+id/labelPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
                     android:text="$"
                     app:layout_constraintEnd_toStartOf="@id/totalPrice"
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="4dp"
                     android:text="0.00"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/search"
@@ -86,7 +86,7 @@
                     android:id="@+id/totalCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="4dp"
                     android:text="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/search"
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="4dp"
                     android:text="Items"
                     app:layout_constraintStart_toEndOf="@id/totalCount"
                     app:layout_constraintTop_toBottomOf="@id/search"></TextView>
@@ -126,7 +126,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/div"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
