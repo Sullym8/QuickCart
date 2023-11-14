@@ -1,8 +1,10 @@
 package com.example.quickcart
 
 import android.content.ClipData.Item
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,7 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.parcelize.Parcelize
 import okhttp3.Headers
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var totalPrice: TextView
     private lateinit var totalCount : TextView
     private lateinit var clear: Button
+    private lateinit var cart: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         totalPrice = findViewById(R.id.totalPrice)
         totalCount = findViewById(R.id.totalCount)
         clear = findViewById(R.id.clearButton)
+        cart = findViewById(R.id.cart)
 
         searchView.addTextChangedListener (object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -61,6 +69,11 @@ class MainActivity : AppCompatActivity() {
             this.shoppingCart.clear()
         }
 
+        cart.setOnClickListener {
+            val i: Intent = Intent(this@MainActivity, CartView::class.java)
+            i.putParcelableArrayListExtra("cart", ArrayList(shoppingCart))
+            startActivity(i)
+        }
 
         getListings("")
     }
@@ -70,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         var searchURL = ""
         var param = ""
         if (searchTerm.isEmpty()) {
-            searchURL = "https://api.bestbuy.com/v1/products((categoryPath.id=pcmcat209400050001))?apiKey=qhqws47nyvgze2mq3qx4jadt&sort=name.asc&show=name,regularPrice,image&pageSize=100&format=json"
+            searchURL = "https://api.bestbuy.com/v1/products((categoryPath.id=pcmcat209400050001))?apiKey=qhqws47nyvgze2mq3qx4jadt&sort=name.asc&show=name,regularPrice,image,longDescription&pageSize=100&format=json"
         } else {
             for (term in searchTerm.split(" ")) {
                 param += if(param.isEmpty()){
@@ -79,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                     "&search=${term}"
                 }
             }
-            searchURL = "https://api.bestbuy.com/v1/products((${param}))?apiKey=qhqws47nyvgze2mq3qx4jadt&sort=name.asc&show=name,regularPrice,image&pageSize=100&format=json"
+            searchURL = "https://api.bestbuy.com/v1/products((${param}))?apiKey=qhqws47nyvgze2mq3qx4jadt&sort=name.asc&show=name,regularPrice,image,longDescription&pageSize=100&format=json"
         }
 
         client[searchURL, object :
@@ -103,7 +116,8 @@ class MainActivity : AppCompatActivity() {
                         BestBuyItem(
                             curr.getString("name"),
                             curr.getString("regularPrice"),
-                            curr.getString("image")
+                            curr.getString("image"),
+                            curr.getString("longDescription")
                         )
                     )
                 }
@@ -121,9 +135,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
-
+@Parcelize
 data class BestBuyItem(
     val itemName: String,
     val itemPrice: String,
-    val itemImageUrl: String
-)
+    val itemImageUrl: String,
+    val description: String,
+) : Parcelable
